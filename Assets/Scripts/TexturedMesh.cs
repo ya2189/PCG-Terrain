@@ -59,6 +59,11 @@ public class TexturedMesh : MonoBehaviour {
         // create plants in random locations (within the grassy regions)
         create_plants(start_x, start_z);
 
+
+        //assign mesh collider to the object
+        MeshCollider meshc = s.AddComponent(typeof(MeshCollider)) as MeshCollider;
+        meshc.sharedMesh = s.GetComponent<MeshFilter>().mesh;
+
         return s;
     }
 
