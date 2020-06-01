@@ -47,7 +47,7 @@ public class TexturedMesh : MonoBehaviour {
         rend.material.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
         //change glossiness/specular component
-        rend.material.SetFloat("_Glossiness", 0.5f);
+        rend.material.SetFloat("_Glossiness", 0.4f);
 
         // create a texture
         Texture2D texture = make_a_texture(start_x, start_z);
@@ -137,14 +137,13 @@ public class TexturedMesh : MonoBehaviour {
             // get the height of this coordinate
             float h = height_map[(x, z)];
 
-            // if the height is in the grassy region (0.93 > h > 0.6), then generate a plant
-            if (h > 0.6 && h < 0.93)
+            // if the height is in the lower grassy region (0.93 > h > 0.6), then generate a plant
+            if (h > 0.6 && h < 0.8)
             {
                 /*DEFAULT SPHERES AS PLANTS*/
                 //GameObject plant = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                GameObject plant = Instantiate(tree);
-                plant.transform.position = new Vector3((float)x / (float)grid_size, h+0.04f, (float)z / (float)grid_size);  // move this object to a new location
-                plant.transform.localScale = new Vector3(plant_scale, plant_scale, plant_scale);  // shrink the object
+                //plant.transform.position = new Vector3((float)x / (float)grid_size, h, (float)z / (float)grid_size);  // move this object to a new location
+                //plant.transform.localScale = new Vector3(plant_scale, plant_scale, plant_scale);  // shrink the object
 
                 // give the plant a name
                 //plant.name = nplants.ToString("plant 0");
@@ -152,6 +151,10 @@ public class TexturedMesh : MonoBehaviour {
                 // change the color of the plant
                 //Renderer rend = plant.GetComponent<Renderer>();
                 //rend.material.color = new Color((Random.Range(30, 80)) / 255.0f, (Random.Range(100, 120)) / 255.0f, (Random.Range(30, 80)) / 255.0f, 1.0f);
+
+                GameObject plant = Instantiate(tree);
+                plant.transform.position = new Vector3((float)x / (float)grid_size, h + 0.04f, (float)z / (float)grid_size);  // move this object to a new location
+                plant.transform.localScale = new Vector3(plant_scale, plant_scale, plant_scale);  // shrink the object
 
                 plant.transform.SetParent(plant_grid.transform, false);
 
@@ -301,7 +304,8 @@ public class TexturedMesh : MonoBehaviour {
     float height(float x, float z, float height_scalar)
     {
         float height = Mathf.PerlinNoise(x, z) + (0.5f) * Mathf.PerlinNoise(2 * x, 2 * z) + (0.25f) * Mathf.PerlinNoise(4 * x, 4 * z) + (0.125f)* Mathf.PerlinNoise(8*x,8*z);
-        return height*height_scalar;
+
+       return height * height_scalar;
     }
 
 	// Update is called once per frame
