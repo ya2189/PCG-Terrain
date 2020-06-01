@@ -10,6 +10,7 @@ public class TexturedMesh : MonoBehaviour {
 	public float scale = 10;
     public float height_scalar = 1;
     public float plant_scale = 0.1f;
+    public GameObject tree;
 
     private Vector3[] verts;  // the vertices of the mesh
     private int[] tris;       // the triangles of the mesh (triplets of integer references to vertices)
@@ -139,18 +140,21 @@ public class TexturedMesh : MonoBehaviour {
             // if the height is in the grassy region (0.93 > h > 0.6), then generate a plant
             if (h > 0.6 && h < 0.93)
             {
-                GameObject plant = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                plant.transform.position = new Vector3((float)x/(float)grid_size, h, (float)z/(float)grid_size);  // move this object to a new location
+                /*DEFAULT SPHERES AS PLANTS*/
+                //GameObject plant = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                GameObject plant = Instantiate(tree);
+                plant.transform.position = new Vector3((float)x / (float)grid_size, h+0.04f, (float)z / (float)grid_size);  // move this object to a new location
                 plant.transform.localScale = new Vector3(plant_scale, plant_scale, plant_scale);  // shrink the object
 
                 // give the plant a name
-                plant.name = nplants.ToString("plant 0");
+                //plant.name = nplants.ToString("plant 0");
 
                 // change the color of the plant
-                Renderer rend = plant.GetComponent<Renderer>();
-                rend.material.color = new Color((Random.Range(30,80))/255.0f, (Random.Range(100,120))/255.0f, (Random.Range(30, 80)) / 255.0f, 1.0f);
+                //Renderer rend = plant.GetComponent<Renderer>();
+                //rend.material.color = new Color((Random.Range(30, 80)) / 255.0f, (Random.Range(100, 120)) / 255.0f, (Random.Range(30, 80)) / 255.0f, 1.0f);
 
                 plant.transform.SetParent(plant_grid.transform, false);
+
                 nplants++;
             }
 
