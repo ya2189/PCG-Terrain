@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class CameraMotionUpdated : MonoBehaviour {
 
+    public GameObject player;
+
+    private Vector3 offset;
 
     int max_chunk = -1;   // the number of chunks that we've made
     int chunk_size = 85;
@@ -19,6 +22,8 @@ public class CameraMotionUpdated : MonoBehaviour {
 
     void Start () {
 
+        
+
         generated_chunks = new List<Vector2>();
         prev_chunk = new Vector2(0, 0);
         curr_chunk = new Vector2(0, 0);
@@ -27,30 +32,42 @@ public class CameraMotionUpdated : MonoBehaviour {
 
 		// cache the main camera
 		MainCamera = Camera.main;
+
+        offset = MainCamera.transform.position - player.transform.position;
+        
     }
-	
-	// Move the camera, and maybe create a new plane
-	void Update () {
+
+    // Update is called once per frame BUT guaranteed to run after all items run after update
+    void LateUpdate()
+    {
+
+        MainCamera.transform.position = player.transform.position + offset;
+        Debug.Log(player.transform.position);
+
+    }
+
+    // Move the camera, and maybe create a new plane
+    void Update () {
 
        
-        // get the horizontal and verticle controls (arrows, or WASD keys)
-        float dx = Input.GetAxis ("Horizontal");
-		float dz = Input.GetAxis ("Vertical");
+  //      // get the horizontal and verticle controls (arrows, or WASD keys)
+  //      float dx = Input.GetAxis ("Horizontal");
+		//float dz = Input.GetAxis ("Vertical");
 
-		//Debug.LogFormat ("dx dz: {0} {1}", dx, dz);
+		////Debug.LogFormat ("dx dz: {0} {1}", dx, dz);
 
-		// sensitivity factors for translate and rotate
-		float translate_factor = 0.1f;
-		float rotate_factor = 3.0f;
+		//// sensitivity factors for translate and rotate
+		//float translate_factor = 0.1f;
+		//float rotate_factor = 3.0f;
 
-		// translate forward or backwards
-		MainCamera.transform.Translate (0, 0, dz * translate_factor);
+		//// translate forward or backwards
+		//MainCamera.transform.Translate (0, 0, dz * translate_factor);
 
-		// rotate left or right
-		MainCamera.transform.Rotate (0, dx * rotate_factor, 0);
+		//// rotate left or right
+		//MainCamera.transform.Rotate (0, dx * rotate_factor, 0);
 
 		// grab the main camera position
-		Vector3 cam_pos = MainCamera.transform.position;
+		Vector3 cam_pos = player.transform.position;
 
         prev_chunk = curr_chunk;
         curr_chunk = new Vector2(Mathf.FloorToInt(cam_pos.x), Mathf.FloorToInt(cam_pos.z ));
